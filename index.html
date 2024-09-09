@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AR Menü Örneği</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.min.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-assets>
+        <!-- OBJ veya GLTF modellerini buraya ekleyebilirsin -->
+      </a-assets>
+
+      <!-- Marker tanımı -->
+      <a-marker type="pattern" url="custom.patt">
+
+        <!-- Pizza menüsü -->
+        <a-box position="0 1 0" scale="0.3 0.3 0.3" material="color: red;"></a-box>
+        <a-text value="Pizza - 25 TL" position="0 1.5 0" scale="1.5 1.5 1.5" rotation="-90 0 0" color="black"></a-text>
+
+        <!-- Hamburger menüsü -->
+        <a-box position="0 1 -1" scale="0.3 0.3 0.3" material="color: blue;"></a-box>
+        <a-text value="Hamburger - 20 TL" position="0 1.5 -1" scale="1.5 1.5 1.5" rotation="-90 0 0" color="black"></a-text>
+
+        <!-- Salata menüsü -->
+        <a-box position="0 1 -2" scale="0.3 0.3 0.3" material="color: green;"></a-box>
+        <a-text value="Salata - 15 TL" position="0 1.5 -2" scale="1.5 1.5 1.5" rotation="-90 0 0" color="black"></a-text>
+
+      </a-marker>
+      
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
