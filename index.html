@@ -11,8 +11,23 @@
     <script src="ar-hit-test.js"></script>
     <script src="model-viewer.js"></script>
     <script src="background-gradient.js"></script>
+    <style>
+      /* "Model Yükleniyor" mesajı stil */
+      #loadingMessage {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 20px;
+        font-size: 20px;
+        border-radius: 10px;
+      }
+    </style>
   </head>
   <body style="margin: 0; overflow: hidden;">
+    <div id="loadingMessage">Model Yükleniyor...</div>
     <a-scene embedded>
       <!-- 3D Objeleri Tanımla -->
       <a-assets>
@@ -39,7 +54,9 @@
         var model = document.querySelector('#characterModel');
         model.addEventListener('model-loaded', function() {
             console.log("Model yüklendi");
-  
+     // "Model Yükleniyor" mesajını gizle
+     var loadingMessage = document.getElementById('loadingMessage');
+            loadingMessage.style.display = 'none';
             // animation-mixer bileşenini manuel ekle
             model.setAttribute('animation-mixer', {
                 clip: '*',  // Tüm animasyonları çalıştırmak için '*' kullan
@@ -50,5 +67,6 @@
             console.log("animation-mixer eklendi ve animasyon başlatıldı.");
         });
       </script>
+ 
   </body>
 </html>
