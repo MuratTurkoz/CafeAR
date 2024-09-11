@@ -1,72 +1,75 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>3D Objeler ve Animasyonlar</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="info-message.js"></script>
-    <script src="https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.min.js"></script>
-    <script src="hide-on-enter-ar.js"></script>
-    <script src="ar-shadows.js"></script>
-    <script src="ar-hit-test.js"></script>
-    <script src="model-viewer.js"></script>
-    <script src="background-gradient.js"></script>
-    <style>
-      /* "Model Yükleniyor" mesajı stil */
-      #loadingMessage {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 20px;
-        font-size: 20px;
-        border-radius: 10px;
-      }
-    </style>
-  </head>
-  <body style="margin: 0; overflow: hidden;">
-    <div id="loadingMessage">Model Yükleniyor...</div>
-    <a-scene embedded>
-      <!-- 3D Objeleri Tanımla -->
-      <a-assets>
-        <!-- GLTF formatında 3D modeli burada tanımlıyoruz (örneğin, hamburger) -->
-        <!-- <a-asset-item id="hamburgerModel" src="hamburger.glb"></a-asset-item> -->
-        <a-asset-item id="pizzaModel" src="pizza.glb"></a-asset-item>
-        <a-asset-item id="characterModel" src="character.glb"  ></a-asset-item>
-      </a-assets>
 
-      <!-- Hamburger Modeli -->
-      <!-- <a-entity gltf-model="#hamburgerModel" position="0 1.5 -3" scale="0.5 0.5 0.5"
+<head>
+  <title>3D Objeler ve Animasyonlar</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.min.js"></script>
+
+  <style>
+    /* "Model Yükleniyor" mesajı stil */
+    #loadingMessage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      font-size: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body style="margin: 0; overflow: hidden;">
+  <div id="loadingMessage">Model Yükleniyor...</div>
+  <a-scene embedded>
+    <!-- 3D Objeleri Tanımla -->
+    <a-assets>
+      <!-- GLTF formatında 3D modeli burada tanımlıyoruz (örneğin, hamburger) -->
+      <!-- <a-asset-item id="hamburgerModel" src="hamburger.glb"></a-asset-item> -->
+      <a-asset-item id="pizzaModel" src="pizza.glb"></a-asset-item>
+      <a-asset-item id="characterModel" src="character.glb"></a-asset-item>
+    </a-assets>
+
+    <!-- Hamburger Modeli -->
+    <!-- <a-entity gltf-model="#hamburgerModel" position="0 1.5 -3" scale="0.5 0.5 0.5"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
       </a-entity> -->
 
-      <!-- Pizza Modeli -->
-      <a-entity gltf-model="#characterModel" animation-mixer anchor="center" position="0 0 -3" rotation="0 0 0" scale="0.5 0.5 0.5" >
-      </a-entity>
+    <!-- Pizza Modeli -->
+    <a-entity gltf-model="#characterModel" animation-mixer anchor="center" position="0 0 -3" rotation="0 0 0"
+      scale="0.5 0.5 0.5">
+    </a-entity>
 
-      <!-- Kamera -->
-      <a-entity camera></a-entity>
-    </a-scene>
-    <script>
-        // Model yüklendiğinde animasyonu manuel tetikleyelim
-        var model = document.querySelector('#characterModel');
-        model.addEventListener('model-loaded', function() {
-            console.log("Model yüklendi");
-     // "Model Yükleniyor" mesajını gizle
-     var loadingMessage = document.getElementById('loadingMessage');
-            loadingMessage.style.display = 'none';
-            // animation-mixer bileşenini manuel ekle
-            model.setAttribute('animation-mixer', {
-                clip: '*',  // Tüm animasyonları çalıştırmak için '*' kullan
-                loop: 'repeat',  // Sonsuz döngü
-                timeScale: 1  // Normal hızda çalıştır
-            });
-  
-            console.log("animation-mixer eklendi ve animasyon başlatıldı.");
-        });
-      </script>
- 
-  </body>
+    <!-- Kamera -->
+    <a-entity camera></a-entity>
+  </a-scene>
+  <script>
+    // Model yüklendiğinde animasyonu manuel tetikleyelim
+    var model = document.querySelector('#characterModel');
+    model.addEventListener('model-loaded', function () {
+      console.log("Model yüklendi");
+      // "Model Yükleniyor" mesajını gizle
+      var loadingMessage = document.getElementById('loadingMessage');
+      loadingMessage.style.display = "none";
+      loadingMessage.style.opacity = '0';
+      setTimeout(function () {
+        loadingMessage.style.display = 'none';
+      }, 500); // 0.5 saniye sonra tamamen gizle
+      // animation-mixer bileşenini manuel ekle
+      // model.setAttribute('animation-mixer', {
+      //   clip: '*',  // Tüm animasyonları çalıştırmak için '*' kullan
+      //   loop: 'repeat',  // Sonsuz döngü
+      //   timeScale: 1  // Normal hızda çalıştır
+      // });
+
+      console.log("animation-mixer eklendi ve animasyon başlatıldı.");
+    });
+  </script>
+
+</body>
+
 </html>
