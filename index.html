@@ -50,24 +50,40 @@
   <script>
     // Model yüklendiğinde animasyonu manuel tetikleyelim
     var model = document.querySelector('#characterModel');
-    model.addEventListener('model-loaded', function () {
-      console.log("Model yüklendi");
-      // "Model Yükleniyor" mesajını gizle
-      var loadingMessage = document.getElementById('loadingMessage');
-      loadingMessage.style.display = "none";
-      loadingMessage.style.opacity = '0';
-      setTimeout(function () {
-        loadingMessage.style.display = 'none';
-      }, 500); // 0.5 saniye sonra tamamen gizle
-      // animation-mixer bileşenini manuel ekle
-      // model.setAttribute('animation-mixer', {
-      //   clip: '*',  // Tüm animasyonları çalıştırmak için '*' kullan
-      //   loop: 'repeat',  // Sonsuz döngü
-      //   timeScale: 1  // Normal hızda çalıştır
-      // });
+    var loadingMessage = document.getElementById('loadingMessage');
+    // Modelin yüklenip yüklenmediğini kontrol et
 
-      console.log("animation-mixer eklendi ve animasyon başlatıldı.");
+    // 'loaded' olayıyla modelin tamamen yüklendiğinden emin olalım
+    model.addEventListener('loaded', function () {
+      console.log("Model ve mesh tamamen yüklendi!");
+      loadingMessage.style.display = 'none'; // Mesh yüklendiğinde mesajı gizle
     });
+
+    // Sayfa yüklendiğinde model yüklenmiş mi kontrol et
+    window.addEventListener('load', function () {
+      if (model.hasLoaded) { // Model zaten yüklenmişse
+        console.log("Model zaten yüklü.");
+        loadingMessage.style.display = 'none';
+      }
+    });
+    // model.addEventListener('model-loaded', function () {
+    //   console.log("Model yüklendi");
+    //   // "Model Yükleniyor" mesajını gizle
+    //   var loadingMessage = document.getElementById('loadingMessage');
+    //   loadingMessage.style.display = "none";
+    //   loadingMessage.style.opacity = '0';
+    //   setTimeout(function () {
+    //     loadingMessage.style.display = 'none';
+    //   }, 500); // 0.5 saniye sonra tamamen gizle
+    //   // animation-mixer bileşenini manuel ekle
+    //   // model.setAttribute('animation-mixer', {
+    //   //   clip: '*',  // Tüm animasyonları çalıştırmak için '*' kullan
+    //   //   loop: 'repeat',  // Sonsuz döngü
+    //   //   timeScale: 1  // Normal hızda çalıştır
+    //   // });
+
+    //   console.log("animation-mixer eklendi ve animasyon başlatıldı.");
+    // });
   </script>
 
 </body>
