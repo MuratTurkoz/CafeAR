@@ -1,0 +1,43 @@
+<html>
+
+</html>
+
+<head>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-system@1.6.0/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js"></script>
+</head>
+
+<body>
+    <a-scene physics>
+        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" static-body></a-plane>
+        <!-- <a-sky color="red"></a-sky> -->
+        <a-ocean color="aqua" depth="100" width="100">
+
+            <a-box position="-1 4 -3" rotation="0 45 0" color="#4CC3D9" dynamic-body></a-box>
+
+        </a-ocean>
+    </a-scene>
+    <script>
+        AFRAME.registerPrimitive('a-ocean', {
+            // Attaches the `ocean` component by default.
+            // Defaults the ocean to be parallel to the ground.
+            defaultComponents: {
+                ocean: {},
+                rotation: { x: -90, y: 0, z: 0 }
+            },
+
+            // Maps HTML attributes to the `ocean` component's properties.
+            mappings: {
+                width: 'ocean.width',
+                depth: 'ocean.depth',
+                density: 'ocean.density',
+                color: 'ocean.color',
+                opacity: 'ocean.opacity'
+            }
+        });
+
+    </script>
+</body>
+
+</html>

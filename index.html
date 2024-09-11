@@ -5,8 +5,9 @@
   <title>3D Objeler ve Animasyonlar</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-physics-system@1.6.0/dist/aframe-physics-system.min.js"></script>
   <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.min.js"></script>
-
+  <script src="jquery.txt"></script>
   <style>
     /* "Model Yükleniyor" mesajı stil */
     #loadingMessage {
@@ -26,6 +27,15 @@
 <body style="margin: 0; overflow: hidden;">
   <div id="loadingMessage">Model Yükleniyor...</div>
   <a-scene embedded>
+    <a-box position="-3 0 -10" rotation="0 45 0" color="#4CC3D9"></a-box>
+    <a-sphere position="0 0 -10" radius="1.25" color="#EF2D5E"></a-sphere>
+    <a-cylinder position="3 0 -10" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+    <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+    <a-box  position="0 0 -4">
+      <a-entity geometry="primitive: box; width: 0.5" material="color: red"></a-entity>
+
+    </a-box>
+    <!-- <a-sky color="#ECECEC"></a-sky> -->
     <!-- 3D Objeleri Tanımla -->
     <a-assets>
       <!-- GLTF formatında 3D modeli burada tanımlıyoruz (örneğin, hamburger) -->
