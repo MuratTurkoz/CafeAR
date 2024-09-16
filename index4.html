@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script> -->
+    <script
+        src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@a5a8449/dist/aframe-particle-system-component.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-simple-sun-sky@^1.2.2/simple-sun-sky.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@d5f3f8/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+
+</head>
+
+<body>
+    <script>
+        AFRAME.registerComponent('hover-text-change', {
+            init: function () {
+                var text = this.el;
+            }
+
+        });
+        // Hover ve click işlemleri için custom component
+        AFRAME.registerComponent('hover-change', {
+            init: function () {
+                var el = this.el;
+
+                // Fare ile üzerine gelince renk değişimi
+                el.addEventListener('mouseenter', function () {
+                    el.setAttribute('color', 'blue');
+                 
+                });
+
+                // Fare çıkınca eski haline döndür
+                el.addEventListener('mouseleave', function () {
+
+                    el.setAttribute('color', 'red');
+
+                });
+
+                // Tıklama olayı
+                el.addEventListener('click', function () {
+                    el.setAttribute('color', 'green');
+                });
+            }
+        });
+
+    </script>
+    <a-scene>
+
+        <!-- Kamera ve cursor bileşeni ekleniyor -->
+        <!-- <a-entity camera position="0 1.6 0">
+            <a-cursor></a-cursor>
+        </a-entity> -->
+
+        <!-- Buton görevi gören bir plane -->
+        <a-plane id="myButton" position="0 1 -3" width="1" height="0.5" color="red" hover-change>
+            <a-entity text="value: Hello, A-Frame!; color: #BBB" position="0 0 0" scale="1 1 1"
+                hover-text-change></a-entity>
+
+
+        </a-plane>
+        <a-camera>
+            <a-cursor></a-cursor>
+        </a-camera>
+
+    </a-scene>
+</body>
+
+</html>

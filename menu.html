@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Menü Prototipi - 3D Modeller</title>
+    <!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- A-Frame CDN -->
+<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <div class="container mx-auto py-10 text-center">
+        <!-- Logo -->
+        <img src="cafeLogo.webp" alt="Cafe Menu Logo" class="mx-auto mb-8 w-32">
+
+        <h1 class="text-3xl font-bold mb-10">Cafe Menü</h1>
+
+        <!-- Kahvaltılıklar -->
+        <div class="max-w-lg mx-auto mb-6">
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <button class="w-full bg-blue-500 text-white text-lg py-2 px-4 focus:outline-none"
+                    onclick="document.getElementById('kahvaltilar').classList.toggle('hidden'); show3DModel('plate')">
+                    Kahvaltılıklar
+                </button>
+                <div id="kahvaltilar" class="p-4 hidden">
+                    <ul class="list-disc pl-6">
+                        <li class="py-1">Serpme Kahvaltı - 50 TL</li>
+                        <li class="py-1">Omlet - 30 TL</li>
+                        <li class="py-1">Menemen - 35 TL</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3D Model Alanı -->
+        <div id="3d-container" class="hidden">
+            <a-scene embedded>
+                <a-entity id="3d-model" position="0 1 -3" scale="0.5 0.5 0.5"></a-entity>
+                <a-entity camera></a-entity>
+            </a-scene>
+        </div>
+    </div>
+
+    <script>
+        function show3DModel(modelType) {
+            const model = document.getElementById('3d-model');
+            const container = document.getElementById('3d-container');
+            container.classList.remove('hidden');
+
+            // Farklı menüler için farklı 3D modeller yükleme
+            switch (modelType) {
+                case 'plate':
+                    model.setAttribute('gltf-model', '#plateModel'); // Kahvaltı için tabak modeli
+                    break;
+                case 'sandwich':
+                    model.setAttribute('gltf-model', '#sandwichModel'); // Sandwich modeli
+                    break;
+                case 'tost':
+                    model.setAttribute('gltf-model', '#tostModel'); // Tost modeli
+                    break;
+                default:
+                    break;
+            }
+        }
+    </script>
+
+    <!-- 3D Model Kaynakları -->
+    <a-assets>
+        <a-asset-item id="plateModel" src="models/plate.glb"></a-asset-item>
+        <a-asset-item id="sandwichModel" src="models/sandwich.glb"></a-asset-item>
+        <a-asset-item id="tostModel" src="models/tost.glb"></a-asset-item>
+    </a-assets>
+
+</body>
+
+</html>
