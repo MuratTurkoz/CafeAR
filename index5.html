@@ -9,110 +9,201 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe-simple-sun-sky@^1.2.2/simple-sun-sky.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@d5f3f8/dist/aframe-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://kit.fontawesome.com/f69854b033.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <script>
         // Menü hover özelliği için komponent
-        AFRAME.registerComponent('menu-hover', {
-            schema: { type: 'string' },  // Menüye özel tanım verilecek
+        AFRAME.registerComponent("menu-hover", {
+            schema: { type: "string" }, // Menüye özel tanım verilecek
 
             init: function () {
                 var el = this.el;
+                var originalBackground = el.getAttribute('src');
+                // Ürün listesi ve fiyatlar
+                // Ürün listesi ve fiyatlar (her ürün için bir image eklenmiş)
+                var products = [
+                    { name: "Burger", price: "350 TL", image: "#burgerImage", model: "#burgerModel" },
+                    { name: "Pizza", price: "200 TL", image: "#pizzaImage", model: "#burgerModel" },
+                    { name: "Pasta", price: "60 TL", image: "#pastaImage", model: "#burgerModel" },
+                    { name: "Salad", price: "$6", image: "#saladImage", model: "#burgerModel" }
+                ];
+                el.addEventListener("mouseenter", function () {
+                    el.setAttribute("color", "blue");
+                    // Ürün listesini güncelle
+                    var productList = el.querySelector(".product-list");
+                    productList.innerHTML = ""; // Önceki listeyi temizle
 
-                el.addEventListener('mouseenter', function () {
-                    el.setAttribute('color', 'blue');
-                    el.setAttribute('animation', {
-                        property: 'height',
-                        to: '3',
+
+                    el.setAttribute("animation", {
+                        property: "height",
+                        to: "3",
                         dur: 1000,
-                        easing: 'easeInOutQuad'
+                        easing: "easeInOutQuad",
+                    });
+                    el.setAttribute("src", "");
+
+                    // Genişlik için animasyon ekliyoruz
+                    el.setAttribute("animation__width", {
+                        property: "width",
+                        to: "2",
+                        dur: 1000,
+                        easing: "easeInOutQuad",
+                    });
+                    el.addEventListener('animationcomplete', function () {
+                        el.setAttribute("src", "");
+                        // Ürünleri ve fiyatlarını göster
+                        // Ürünleri ve fiyatlarını göster
+                        products.forEach(function (product, index) {
+                            var productName = product.name;
+                            var productPrice = product.price;
+// Görsel (her ürün için dinamik)
+                            
+                            // Görsel (her ürün için dinamik)
+                            var imageEntity = document.createElement('a-image');
+                            imageEntity.setAttribute("src", product.image);  // Her ürün için farklı görsel
+                            imageEntity.setAttribute("width", "0.15");
+                            imageEntity.setAttribute("height", "0.15");
+                            imageEntity.setAttribute("position", `-1.1 ${1.5 - (index * 0.3)} 1`);
+                            productList.appendChild(imageEntity);
+
+                            // Ürün adı
+                            var productNameEntity = document.createElement('a-entity');
+                            productNameEntity.setAttribute("class", "interactable");  // Interactable sınıfı eklendi
+                            productNameEntity.setAttribute("text", {
+                                value: productName,
+                                color: 'white',
+                                width: 2,
+                                align: 'left',
+                                wrapCount: 30
+                            });
+                            productNameEntity.setAttribute("position", `0 ${1.5 - (index * 0.3)} 1`);
+                            productList.appendChild(productNameEntity);
+
+                            // Fiyat
+                            var productPriceEntity = document.createElement('a-entity');
+                            productPriceEntity.setAttribute("text", {
+                                value: productPrice,
+                                color: 'white',
+                                width: 2,
+                                align: 'right',
+                                wrapCount: 30
+                            });
+                            productPriceEntity.setAttribute("position", `-0.8 ${1.5 - (index * 0.3)} 1`);
+                            productList.appendChild(productPriceEntity);
+                            if (product.name === "Burger") {
+                                productNameEntity.addEventListener('mouseenter', function () {
+                                    // Burger modelini sahneye ekleyin
+                                    modelEntity = document.createElement('a-entity');
+                                    modelEntity.setAttribute('gltf-model', product.model);  // Model kaynağı
+                                    modelEntity.setAttribute('position', '-1 1 -3');  // Sahnedeki pozisyon
+                                    modelEntity.setAttribute('scale', '1 1 1');  // Model boyutu
+
+                                    document.querySelector('a-scene').appendChild(modelEntity);
+                                });
+
+                                productNameEntity.addEventListener('mouseleave', function () {
+                                    // Modeli kaldır
+                                    if (modelEntity) {
+                                        modelEntity.parentNode.removeChild(modelEntity);
+                                        modelEntity = null;
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    var planeEntity = document.createElement('a-plane');
+                            planeEntity.setAttribute("src", product.image);  // Her ürün için farklı görsel
+                            planeEntity.setAttribute("width", "0.15");
+                            planeEntity.setAttribute("height", "0.15");
+                            planeEntity.setAttribute("position", `-1.1 ${1.5 - (index * 0.3)} 1.2`);
+                            planeEntity.setAttribute("class", "interactable"); // Etkileşimli sınıf
+                            productList.appendChild(planeEntity);
+                    var textEntity = el.querySelector("[text]");
+                    textEntity.setAttribute("text", "value", "");
+                });
+
+                el.addEventListener("mouseleave", function () {
+                    el.setAttribute("color", "gray");
+                    el.setAttribute("animation", {
+                        property: "height",
+                        to: "0.8",
+                        dur: 1000,
+                        easing: "easeInOutQuad",
                     });
 
                     // Genişlik için animasyon ekliyoruz
-                    el.setAttribute('animation__width', {
-                        property: 'width',
-                        to: '2',
+                    el.setAttribute("animation__width", {
+                        property: "width",
+                        to: "1.5",
                         dur: 1000,
-                        easing: 'easeInOutQuad'
+                        easing: "easeInOutQuad",
                     });
-                    var textEntity = el.querySelector('[text]');
-                    textEntity.setAttribute('text', 'value', 'New Menu Item Selected!');
+
+                    // Animasyon tamamlandığında orijinal arka planı geri yükle
+                    el.addEventListener('animationcomplete', function () {
+                        el.setAttribute("src", originalBackground);
+                        var productList = el.querySelector(".product-list");
+                        productList.innerHTML = "";
+
+                    });
+                    // Ürün listesini temizle
+                    var productList = el.querySelector(".product-list");
+                    productList.innerHTML = "";
+                    var textEntity = el.querySelector("[text]");
+                    textEntity.setAttribute("text", "value", "Drinks");
                 });
 
-                el.addEventListener('mouseleave', function () {
-                    el.setAttribute('color', 'gray');
-                    el.setAttribute('animation', {
-                        property: 'height',
-                        to: '0.8',
-                        dur: 1000,
-                        easing: 'easeInOutQuad'
-                    });
 
-                    // Genişlik için animasyon ekliyoruz
-                    el.setAttribute('animation__width', {
-                        property: 'width',
-                        to: '1.5',
-                        dur: 1000,
-                        easing: 'easeInOutQuad'
-                    });
-                    var textEntity = el.querySelector('[text]');
-                    textEntity.setAttribute('text', 'value', 'Drinks');
-                });
-
-                // Menüye tıklanınca tetiklenecek olay
-                el.addEventListener('click', function () {
-                    alert('Menu Selected: ' + el.getAttribute('menu-hover'));
-                    el.setAttribute('color', 'green');
-                    // Yükseklik için animasyon ekliyoruz
-                    el.setAttribute('animation', {
-                        property: 'height',
-                        to: '5',
-                        dur: 1000,
-                        easing: 'easeInOutQuad'
-                    });
-
-                    // Genişlik için animasyon ekliyoruz
-                    el.setAttribute('animation__width', {
-                        property: 'width',
-                        to: '3',
-                        dur: 1000,
-                        easing: 'easeInOutQuad'
-                    });
-                });
-            }
+            },
         });
     </script>
 
     <a-scene>
         <a-assets>
             <img id="backgroundImage" src="cerceve.png" />
+            <img id="logoIcon" src="logoIcon.svg" />
+            <img id="drinksBackground" src="drinksBacground.png" alt="Drinks Background" />
+            <img id="burgerImage" src="hamburger.png" alt="">
+            <a-asset-item id="burgerModel" src="pizza.glb"></a-asset-item>
         </a-assets>
+        <a-entity gltf-model="#burgerModel" animation-mixer position="-1 1 -3" scale="0.5 0.5 0.5"></a-entity>
+        <!-- Logo -->
+        <a-image src="#logoIcon" position="0 3 -3" width="1.6" height="0.8"></a-image>
 
-        <!-- 1. Menü -->
-        <a-plane id="menu1" src="#backgroundImage" position="-3 1 -3" width="1.5" height="0.8" color="#414040"
-            menu-hover="Appetizers" rotation="0 45 0">
-            <a-entity text="value: Appetizers; color: white; align: center; width: 2; wrapCount: 20"
-                position="0 0 0"></a-entity>
-        </a-plane>
+        <!-- Menüler -->
+        <a-plane position="0 1 -3">
+            <!-- 1. Menü -->
+            <a-plane id="menu1" class=" interactable" src="#drinksBackground" rotation="0 45 0" position="-3 0 0"
+                width="1.5" height="0.8" color="#414040" menu-hover="Appetizers">
+                <a-entity text="value: Appetizers; color: white; align: center; width: 2; wrapCount: 20"
+                    position="0 0 0"></a-entity>
+                <!-- Ürün listesi burada gösterilecek -->
+                <a-entity class="product-list" position="0.5 -0.5 0"></a-entity>
+            </a-plane>
 
-        <!-- 2. Menü -->
-        <!-- <a-plane id="menu2" position="0 1 -3" width="1.5" height="0.8" menu-hover="Main Courses" src="#backgroundImage" transparent="true" opacity="0.5"  color="#414040">
-            <a-entity text="value: Main Courses; color: white; align: center" position="0 0 0"></a-entity>
-        </a-plane> -->
-        <a-plane id="menu2" position="0 1 -3" width="1.5" height="0.8" color="#414040" src="#backgroundImage"
-            menu-hover="Main Courses" transparent="true" opacity="1"></a-plane> <!-- Dış çerçeve (beyaz) -->
-        <!-- <a-plane id="menu2" position="0 1 -2.99" width="1.4" height="0.7"src="#backgroundImage" transparent="true" menu-hover="Main Courses" opacity="1" ></a-plane> İç plane (siyah arka plan) -->
+            <!-- 2. Menü -->
+            <a-plane id="menu2" position="0 0 0" width="1.5" height="0.8" color="#414040" src="#backgroundImage"
+                menu-hover="Main Courses" transparent="true" opacity="1">
+                <a-entity text="value: Main Courses; color: white; align: center; width: 2; wrapCount: 20"
+                    position="0 0 0"></a-entity>
+            </a-plane>
 
-        <!-- 3. Menü -->
-        <a-plane id="menu3" position="3 1 -3" width="1.5" height="0.8" color="#414040" menu-hover="Drinks"
-            rotation="0 -45 0">
-            <a-entity text="value: Drinks; color: white; align: center" position="0 0 0"></a-entity>
+            <!-- 3. Menü -->
+            <a-plane id="menu3" position="3 0 0" width="1.5" height="0.8" color="#414040" menu-hover="Drinks">
+                <a-entity text="value: Drinks; color: white; align: center" position="0 0 0"></a-entity>
+            </a-plane>
         </a-plane>
 
         <!-- Kamera ve cursor bileşeni -->
+        <!-- Varsayılan işaretçiyi özelleştirme -->
         <a-camera>
-            <a-cursor></a-cursor>
+            <!-- Cursor bileşenine stil ve animasyon ekliyoruz -->
+            <a-cursor raycaster="objects: .interactable; interval: 100" color="yellow" radius="0.02" thickness="0.005"
+                animation__mouseenter="property: scale; startEvents: mouseenter; from: 1 1 1; to: 1.5 1.5 1.5; dur: 200"
+                animation__mouseleave="property: scale; startEvents: mouseleave; from: 1.5 1.5 1.5; to: 1 1 1; dur: 200">
+            </a-cursor>
         </a-camera>
     </a-scene>
 </body>
