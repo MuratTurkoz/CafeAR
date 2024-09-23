@@ -1,124 +1,101 @@
 <!DOCTYPE html>
 <html lang="tr">
-  <head>
+
+<head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@a5a8449/dist/aframe-particle-system-component.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@a5a8449/dist/aframe-particle-system-component.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-simple-sun-sky@^1.2.2/simple-sun-sky.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@d5f3f8/dist/aframe-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
-  </head>
 
-  <body>
+</head>
+
+<body>
 
     <a-scene>
         <!-- a-assets ile model ve görseller tanımlanır -->
         <a-assets>
-            <img id="drinksBackground" src="drinksBacground.png" alt="Drinks Background" />
-            <img id="burgerImage" src="hamburger.png" alt="Drinks Background" />
-            <a-asset-item id="pizzaModel" src="pizza.glb"></a-asset-item>
+            <img id="drinksBackground" src="Images/drinksBacground.png" alt="Drinks Background" />
+            <img id="burgerImage" src="Images/hamburger.png" alt="Drinks Background" />
+            <a-asset-item id="pizzaModel" src="Models/pizza.glb"></a-asset-item>
+
         </a-assets>
 
+
         <!-- Görsel ve yazılar için a-entity -->
-        <a-entity id="imageEntity" position="-1.5 1 -3" menu-hover>
+        <a-entity id="imageEntity" position="0 1 -2" menu-hover>
             <!-- 2D Resim -->
-            <a-plane id="hoverImage" scale="1" material="src: #drinksBackground">
-                <a-text id="drinksText" value="Drinks" color="red" position="0 0 0.1"></a-text>
-                <a-image src="burgerImage" width="50" height="50" position="0 0 1 "></a-image>
+            <a-plane id="hoverImage" class="interactable" width="2" height="1" scale="1 1 1" position="0 0 -1"
+                material="src:#drinksBackground" geometry="primitive: plane; width: 2; height: 1">
+                <a-text id="drinksText" value="Drinks" align="center" wrapCount="10" color="red" width="4"
+                    position="0 0 0.1"></a-text>
+                <!-- <a-image src="#burgerImage" width="0.2" height="0.2" position="-0.2 0 0"></a-image> -->
             </a-plane>
 
             <!-- Şeffaf a-plane ile metinlerin etkileşim alanını belirtiyoruz -->
-            <a-plane class="interactable" position="0 0.6 0.01" width="2" height="0.3" opacity="0" visible="false">
+            <!-- <a-plane  position="0 0.6 0.01" width="2" height="0.3" opacity="0" visible="false">
                 <a-text value="Option 1" color="red" align="center" width="2"></a-text>
             </a-plane>
-            <a-plane class="interactable" position="0 0.3 0.01" width="2" height="0.3" opacity="0" visible="false">
+            <a-plane  position="0 0.3 0.01" width="2" height="0.3" opacity="0" visible="false">
                 <a-text value="Option 2" color="red" align="center" width="2"></a-text>
             </a-plane>
-            <a-plane class="interactable" position="0 0 0.01" width="2" height="0.3" opacity="0" visible="false">
+            <a-plane  position="0 0 0.01" width="2" height="0.3" opacity="0" visible="false">
                 <a-text value="Option 3" color="red" align="center" width="2"></a-text>
-            </a-plane>
+            </a-plane> -->
         </a-entity>
 
         <!-- Kamera ve cursor bileşeni -->
         <a-camera>
             <a-cursor raycaster="objects: .interactable"></a-cursor>
         </a-camera>
+        <a-sky color="blue"></a-sky>
     </a-scene>
 
     <script>
-        // 'menu-hover' bileşenini tanımlama
         AFRAME.registerComponent("menu-hover", {
-            schema: { type: "string" }, // Menüye özel tanım verilecek
             init: function () {
-                const el = this.el; // Entity referansı
+                const el = this.el;
                 const hoverImage = el.querySelector('#hoverImage');
-                const drinksText = el.querySelector('#drinksText');  // "Drinks" yazısı
-                const optionPlanes = el.querySelectorAll('a-plane.interactable'); // Seçenekler
-                let shapeEntity = null;
 
-                // Resim üzerine gelindiğinde büyütme ve yazıları gösterme
                 hoverImage.addEventListener('mouseenter', function () {
-                    // Resmi büyüt
-              
-                    hoverImage.setAttribute('scale', '1.5 1.5 1.5');
+                  //  hoverImage.setAttribute('scale', '2 2 2'); // Resmi büyüt
+                    hoverImage.setAttribute("animation", {
+                        property: "height",
+                        to: "4",
+                        dur: 1000,
+                        easing: "easeInOutQuad",
+                    });
+                    hoverImage.setAttribute("src", "");
 
-                    // "Drinks" yazısını gizle
-                    drinksText.setAttribute('visible', 'false');
-
-                    // Seçenek yazılarını görünür yap
-                    optionPlanes.forEach((plane) => {
-                        plane.setAttribute('visible', 'true');
+                    // Genişlik için animasyon ekliyoruz
+                    hoverImage.setAttribute("animation__width", {
+                        property: "width",
+                        to: "2",
+                        dur: 1000,
+                        easing: "easeInOutQuad",
                     });
                 });
 
-                // Resimden ayrılınca yazıları gizle ve resmi küçült
+
                 hoverImage.addEventListener('mouseleave', function () {
-                    // Resmi eski boyutuna döndür
-                    hoverImage.setAttribute('scale', '1 1 1');
-
-                    // "Drinks" yazısını tekrar göster
-                    drinksText.setAttribute('visible', 'true');
-
-                    // Seçenek yazılarını gizle
-                    optionPlanes.forEach((plane) => {
-                        plane.setAttribute('visible', 'false');
+                  //  hoverImage.setAttribute('scale', '1 1 1'); // Resmi küçült
+                    hoverImage.setAttribute("animation", {
+                        property: "height",
+                        to: "1",
+                        dur: 1000,
+                        easing: "easeInOutQuad",
                     });
 
-                    // Eğer bir 3D şekil varsa, onu sahneden kaldır
-                    if (shapeEntity) {
-                        shapeEntity.parentNode.removeChild(shapeEntity);
-                        shapeEntity = null;
-                    }
-                });
+                    // Genişlik için animasyon ekliyoruz
+                    el.setAttribute("animation__width", {
+                        property: "width",
+                        to: "2",
+                        dur: 1000,
+                        easing: "easeInOutQuad",
+                    });
 
-                // 3D şekli göstermek için bir fonksiyon
-                function showShape(shape, isModel = false) {
-                    if (shapeEntity) {
-                        shapeEntity.parentNode.removeChild(shapeEntity); // Önceki şekli kaldır
-                    }
-
-                    shapeEntity = document.createElement('a-entity');
-                    if (isModel) {
-                        shapeEntity.setAttribute('gltf-model', shape);  // Model ekle
-                    } else {
-                        shapeEntity.setAttribute('geometry', { primitive: shape, radius: 0.5 });  // Geometrik şekil ekle
-                        shapeEntity.setAttribute('material', 'color: blue');
-                    }
-                    shapeEntity.setAttribute('position', '-3 1 -3'); // Resmin soluna konumlandır
-                    document.querySelector('a-scene').appendChild(shapeEntity);
-                }
-
-                // Her bir yazı için fareyle üzerine gelindiğinde 3D şekil ya da model gösterme
-                el.querySelector('a-plane:nth-child(2)').addEventListener('mouseenter', function () {
-                    showShape('box'); // Bir kutu göster
-                });
-
-                el.querySelector('a-plane:nth-child(3)').addEventListener('mouseenter', function () {
-                    showShape('#pizzaModel', true); // Pizza modelini göster
-                });
-
-                el.querySelector('a-plane:nth-child(4)').addEventListener('mouseenter', function () {
-                    showShape('cone'); // Bir koni göster
                 });
             }
         });
